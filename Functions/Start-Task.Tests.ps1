@@ -8,7 +8,7 @@ InModuleScope Task-Runner {
                 Action = {Write-Host "Hello"}
             }
             Start-Task $Task
-            $Script:HostOutput | Should Be "Write.Hello`r`nHello"
+            $Script:HostOutput | Should Be "Task: Write.Hello`r`nHello"
         }
         It "shows a description" {
             $Script:HostOutput = ""
@@ -18,7 +18,7 @@ InModuleScope Task-Runner {
                 Action = {Write-Host "Hello"}
             }
             Start-Task $Task
-            $Script:HostOutput | Should Be "Write.Hello`r`nWrite `"Hello`"`r`nHello"
+            $Script:HostOutput | Should Be "Task: Write.Hello`r`nWrite `"Hello`"`r`nHello"
         }
         It "displays known error" {
             $Script:HostOutput = ""
@@ -33,7 +33,7 @@ InModuleScope Task-Runner {
                 }
             }
             Start-Task $Task
-            $Script:HostOutput | Should Be "Throw.Known`r`nKnown Error`r`n"
+            $Script:HostOutput | Should Be "Task: Throw.Known`r`nKnown Error`r`n"
         }
         It "throws unknown error" {
             $Task = @{

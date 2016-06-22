@@ -6,19 +6,17 @@ function Start-Task {
         [hashtable]$Colors = @{}
     )
 
-    if ($Task.Guard -and !(& $Task.Guard $ResultTree)) {
-        return
-    }
-
     $Path = $Task.Path
     $Alias = if ($Task.Alias) {$Task.Alias} else {$Task.Path}
     $Description = $Task.Description
 
-    $ColoredAlias = @(@{Value = "$Alias"; Color = $Colors.Alias}, "`r`n")
+    $ColoredAlias = @(@{Value = "Task: $Alias"; Color = $Colors.Alias}, "`r`n")
 
     $Message = @($ColoredAlias)
     if ($Description) {$Message += @($Description, "`r`n")}
 
+    $Errors = $Task.Errors
+    $Skip = $Task.Skip
     $Verify = $Task.Verify
     $Action = 
     if ($Task.Arguments) {
@@ -29,19 +27,23 @@ function Start-Task {
 
     Write-Color $Message
 
-    try {
-        $ActionResult = & $Action
-    } catch [Exception] {
-        if (!$Task.Errors -or !(& $Task.Errors $_.Exception.Message)) {
-            throw $_
-        } else {
-            Write-Color @(@{Value = $_.Exception.Message; Color = $Colors.Error}, "`r`n")
+    if (!$Skip -or !(& $Skip $ResultTree)) {
+        try {
+            $ActionResult = & $Action
+        } catch [Exception] {
+            if (!$Errors -or !(& $Errors $_.Exception.Message)) {
+                throw $_
+            } else {
+                Write-Color @(@{Value = $_.Exception.Message; Color = $Colors.Error}, "`r`n")
+            }
         }
+    } else {
+        Write-Color @(@{Value = "Skipped Action"; Color = $Colors.Skip}, "`r`n")
     }
 
     $VerifyResult =
-    if ($Task.Verify) {
-        Start-TaskVerification $Task.Verify $ResultTree $ActionResult
+    if ($Verify) {
+        Start-TaskVerification $Verify $ResultTree $ActionResult
     } else {
         @{}
     }
