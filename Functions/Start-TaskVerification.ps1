@@ -7,23 +7,26 @@ function Start-TaskVerification {
 
     $Tasks = @($Subtasks | % {@{
         Path = $_.Path
+        Alias = "Verification Step: $($_.Path)"
         Arguments = @{
             ResultTree = $ResultTree
             Result = $Result
             Test = $_.Test
         }
-        Action = [scriptblock]::Create(
-@"
-{
-    Param(
-        [hashtable]`$Arguments,
-        [hashtable]`$ResultTree
-    )
-    & `$Arguments.Test `$Arguments.ResultTree `$Arguments.Result
-}
-"@
-        )
+        Action = {
+            Param(
+                [hashtable]$Arguments
+            )
+            Write-Color "Start -> "
+            $TestResult = & $Arguments.Test $Arguments.ResultTree $Arguments.Result
+            if ($TestResult) {
+                Write-Color @(@{Value = "Passed"; Color = "Green"}, "`r`n")
+            } else {
+                Write-Color @( @{Value = "Failed"; Color = "Red"}, "`r`n")
+            }
+            return $TestResult
+        }
     }})
 
-    return (Start-TaskList $Tasks).Action
+    return (Start-TaskList $Tasks -Colors @{Alias = "Cyan"}).Action
 }

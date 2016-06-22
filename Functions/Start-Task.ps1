@@ -2,7 +2,8 @@ function Start-Task {
     Param(
         [ValidateScript({Is-Task $_})]
         [hashtable]$Task,
-        [hashtable]$ResultTree = @{}
+        [hashtable]$ResultTree = @{},
+        [hashtable]$Colors = @{}
     )
 
     if ($Task.Guard -and !(& $Task.Guard $ResultTree)) {
@@ -13,7 +14,7 @@ function Start-Task {
     $Alias = if ($Task.Alias) {$Task.Alias} else {$Task.Path}
     $Description = $Task.Description
 
-    $ColoredAlias = @(@{Value = "$Alias"; Color = "Green"}, "`r`n")
+    $ColoredAlias = @(@{Value = "$Alias"; Color = $Colors.Alias}, "`r`n")
 
     $Message = @($ColoredAlias)
     if ($Description) {$Message += @($Description, "`r`n")}
@@ -34,7 +35,7 @@ function Start-Task {
         if (!$Task.Errors -or !(& $Task.Errors $_.Exception.Message)) {
             throw $_
         } else {
-            Write-Color @(@{Value = $_.Exception.Message; Color = "Yellow"}, "`r`n")
+            Write-Color @(@{Value = $_.Exception.Message; Color = $Colors.Error}, "`r`n")
         }
     }
 

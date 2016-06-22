@@ -1,8 +1,12 @@
 function Start-TaskList {
     Param(
         [hashtable[]]$Tasks,
-        [hashtable]$ResultTree = @{}
+        [hashtable]$ResultTree = @{},
+        [hashtable]$Colors = @{}
     )
+
+    if (!$Colors.Alias) {$Colors.Alias = "Green"}
+    if (!$Colors.Error) {$Colors.Error = "Yellow"}
 
     $Tasks | % {
         $BuildAction = Get-HashtableBuilder "ResultTree" "Action.$($_.Path)"
@@ -13,7 +17,7 @@ function Start-TaskList {
         & $BuildAction
         & $BuildVerify
 
-        $Result = Start-Task $_ $ResultTree
+        $Result = Start-Task $_ $ResultTree $Colors
 
         if ($Result) {
             & $AssignAction $Result.Action
