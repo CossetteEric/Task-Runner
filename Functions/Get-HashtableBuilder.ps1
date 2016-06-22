@@ -25,8 +25,9 @@ $System.Config.User.Name = "John"
 
     $Branches = if ($Nodes.Length -gt 1) {$Nodes[0..($Nodes.Length - 2)]}
     $Lines = if ($Branches) {$Branches | % {$TreePath = $TableName} {
+        $Line = "if (!`$$TreePath.ContainsKey(`"$_`")) {`$$TreePath.$_ = @{}}"
         $TreePath += ".$_"
-        "if (!`$$TreePath) {`$$TreePath = @{}}"
+        $Line
     }}
     $BuildString = (@($basecase) + $Lines) -Join [System.Environment]::NewLine
     return [scriptblock]::Create($BuildString)
