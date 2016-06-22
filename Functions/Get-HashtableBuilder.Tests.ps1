@@ -1,4 +1,4 @@
-InModuleScope Builder-Tree {
+InModuleScope Task-Tree {
     Describe "the Get-HashtableBuilder function" {
         It "adds depth one" {
             $User = @{}

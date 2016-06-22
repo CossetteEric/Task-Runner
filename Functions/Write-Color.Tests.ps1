@@ -1,4 +1,4 @@
-InModuleScope Builder-Tree {
+InModuleScope Task-Tree {
     Describe "the Write-Color function" {
         Mock Write-Host {}
         It "string writes once" {
