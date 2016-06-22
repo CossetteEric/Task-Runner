@@ -1,4 +1,4 @@
-InModuleScope Task-Tree {
+InModuleScope Task-Runner {
     Describe "the Is-Task function" {
         It "returns true on all mandatory keys existing" {
             Is-Task @{Path = "Print.Hello"; Action = {Write-Host "Hello"}}

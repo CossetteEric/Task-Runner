@@ -4,6 +4,6 @@ $moduleRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
     ? {!($_.ProviderPath.ToLower().Contains(".tests."))} |
     % {. $_.ProviderPath}
 
-Export-ModuleMember -function "Start-Leaf"
-Export-ModuleMember -function "Start-Tree"
-Export-ModuleMember -function "Verify-Leaf"
+Export-ModuleMember -function "Start-Task"
+Export-ModuleMember -function "Start-TaskList"
+Export-ModuleMember -function "Verify-Task"

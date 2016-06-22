@@ -1,4 +1,4 @@
-InModuleScope Task-Tree {
+InModuleScope Task-Runner {
     Describe "the Get-HashtableAssigner function" {
         $UserName = "John"
 

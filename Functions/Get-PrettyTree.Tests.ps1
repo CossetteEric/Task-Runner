@@ -1,4 +1,4 @@
-InModuleScope Task-Tree {
+InModuleScope Task-Runner {
     Describe "the Get-PrettyTree function" {
         Context "string value" {
             It "prettifies depth of 1" {

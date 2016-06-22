@@ -40,7 +40,7 @@ function Start-Task {
 
     $VerifyResult =
     if ($Task.Verify) {
-        Verify-Leaf $Task.Verify $ResultTree $ActionResult
+        Verify-Task $Task.Verify $ResultTree $ActionResult
     } else {
         @{}
     }
