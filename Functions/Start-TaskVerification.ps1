@@ -17,8 +17,8 @@ function Start-TaskVerification {
             Param(
                 [hashtable]$Arguments
             )
-            Write-Color "Start -> "
             $TestResult = & $Arguments.Test $Arguments.ResultTree $Arguments.Result
+            Write-Color "Status -> "
             if ($TestResult) {
                 Write-Color @(@{Value = "Passed"; Color = "Green"}, "`r`n")
             } else {
