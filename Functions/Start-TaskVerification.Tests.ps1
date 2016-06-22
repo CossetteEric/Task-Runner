@@ -1,6 +1,8 @@
 InModuleScope Task-Runner {
     Describe "the Start-TaskVerification function" {
         It "returns tree" {
+            Mock Write-Host {}
+
             $Subtasks = @(@{
                 Path = "Is.NotBlank"
                 Test = {
