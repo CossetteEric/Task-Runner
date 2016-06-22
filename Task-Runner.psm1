@@ -6,4 +6,4 @@ $moduleRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Export-ModuleMember -function "Start-Task"
 Export-ModuleMember -function "Start-TaskList"
-Export-ModuleMember -function "Verify-Task"
+Export-ModuleMember -function "Start-TaskVerification"

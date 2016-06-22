@@ -5,15 +5,19 @@ function Start-TaskList {
     )
 
     $Tasks | % {
-        $BuildPath = [scriptblock]::Create((Get-BuildHashtableString "ResultTree" $_.Path))
-        $AssignResult = [scriptblock]::Create((Get-AssignToHashtableString "ResultTree" $_.Path))
+        $BuildAction = Get-HashtableBuilder "ResultTree" "Action.$($_.Path)"
+        $BuildVerify = Get-HashtableBuilder "ResultTree" "Verify.$($_.Path)"
+        $AssignAction = Get-HashtableAssigner "ResultTree" "Action.$($_.Path)"
+        $AssignVerify = Get-HashtableAssigner "ResultTree" "Verify.$($_.Path)"
 
-        & $BuildPath
+        & $BuildAction
+        & $BuildVerify
 
         $Result = Start-Task $_ $ResultTree
 
         if ($Result) {
-            & $AssignResult $Result
+            & $AssignAction $Result.Action
+            & $AssignVerify $Result.Verify
         }
     }
     return $ResultTree
