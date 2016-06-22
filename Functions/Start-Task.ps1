@@ -16,7 +16,13 @@ function Start-Task {
     if ($Description) {$Message += @($Description, "`r`n")}
 
     $Errors = $Task.Errors
-    $Skip = $Task.Skip
+    $Skip = if ($Task.Skip) {
+        if ($Task.Arguments) {
+            {& $Task.Skip $Task.Arguments $ResultTree}
+        } else {
+            {& $Task.Skip $ResultTree}
+        }
+    }
     $Verify = $Task.Verify
     $Action = 
     if ($Task.Arguments) {

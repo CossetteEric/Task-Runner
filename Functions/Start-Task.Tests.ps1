@@ -86,5 +86,23 @@ InModuleScope Task-Runner {
                 $_.Is.Capitalized | SHould Be $true
             }
         }
+        It "skips" {
+            $Script:Users = @("John Doe", "Jane Doe")
+            $Task = @{
+                Path = "Create.User"
+                Arguments = @{Name = "John Doe"}
+                Skip = {
+                    Param([hashtable]$Arguments)
+                    return $Script:Users -Contains $Arguments.Name
+                }
+                Action = {
+                    Param([hashtable]$Arguments)
+                    $Script:Users += @($Arguments.Name)
+                    return $Script:Users.Length - 1
+                }
+            }
+            $ResultTree = Start-Task $Task
+            $ResultTree.Action | Should Be $null
+        }
     }
 }
