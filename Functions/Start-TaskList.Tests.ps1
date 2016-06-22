@@ -1,5 +1,5 @@
 InModuleScope Task-Runner {
-    Describe "the Start-Task function" {
+    Describe "the Start-TaskList function" {
         It "returns action and confirmation results" {
             Mock Write-Host {}
             Mock Read-Host {"John Doe"}
