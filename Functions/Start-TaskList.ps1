@@ -7,6 +7,7 @@ function Start-TaskList {
 
     if (!$Colors.Alias) {$Colors.Alias = "Green"}
     if (!$Colors.Error) {$Colors.Error = "Yellow"}
+    if (!$Colors.Skip) {$Colors.Skip = "Yellow"}
 
     $Tasks | % {
         $BuildAction = Get-HashtableBuilder "ResultTree" "Action.$($_.Path)"
