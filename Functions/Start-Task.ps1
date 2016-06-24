@@ -9,7 +9,13 @@ function Start-Task {
 
     $Path = $Task.Path
     $Alias = if ($Task.Alias) {$Task.Alias} else {$Task.Path}
-    $Description = $Task.Description
+    $Description = if ($Task.Description) {
+        if ($Task.Description -is [string]) {
+            $Task.Description
+        } elseif ($Task.Description -is [scriptblock]) {
+            & $Task.Description $ResultTree $Task.Arguments
+        }
+    }
 
     $TaskLevelName = "sub" * $SubtaskLevel + "task"
     $TaskLevelName = $TaskLevelName[0].ToString().ToUpper() + $TaskLevelName.SubString(1)
