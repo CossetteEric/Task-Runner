@@ -1,3 +1,5 @@
+Import-Module Tree-Maker
+
 $moduleRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 "$moduleRoot\Functions\*.ps1" | Resolve-Path |

@@ -11,10 +11,10 @@ function Start-TaskList {
     if (!$Colors.Skip) {$Colors.Skip = "Yellow"}
 
     $Tasks | % {
-        $BuildAction = Get-HashtableBuilder "ResultTree" "Action.$($_.Path)"
-        $BuildVerify = Get-HashtableBuilder "ResultTree" "Verify.$($_.Path)"
-        $AssignAction = Get-HashtableAssigner "ResultTree" "Action.$($_.Path)"
-        $AssignVerify = Get-HashtableAssigner "ResultTree" "Verify.$($_.Path)"
+        $BuildAction = Get-TreeBuilder "ResultTree" "Action.$($_.Path)"
+        $BuildVerify = Get-TreeBuilder "ResultTree" "Verify.$($_.Path)"
+        $AssignAction = Get-TreeAssigner "ResultTree" "Action.$($_.Path)"
+        $AssignVerify = Get-TreeAssigner "ResultTree" "Verify.$($_.Path)"
 
         & $BuildAction
         & $BuildVerify
