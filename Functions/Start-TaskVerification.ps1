@@ -2,7 +2,9 @@ function Start-TaskVerification {
     Param(
         [hashtable[]]$Subtasks,
         [hashtable]$ResultTree,
-        [object]$Result
+        [object]$Result,
+        [hashtable]$Arguments,
+        [int]$SubtaskLevel = 0
     )
 
     $Tasks = @($Subtasks | % {@{
@@ -11,13 +13,14 @@ function Start-TaskVerification {
         Arguments = @{
             ResultTree = $ResultTree
             Result = $Result
+            Arguments = $Arguments
             Test = $_.Test
         }
         Action = {
             Param(
                 [hashtable]$Arguments
             )
-            $TestResult = & $Arguments.Test $Arguments.ResultTree $Arguments.Result
+            $TestResult = & $Arguments.Test $Arguments.ResultTree $Arguments.Result $Arguments.Arguments
             Write-Color "Status -> "
             if ($TestResult) {
                 Write-Color @(@{Value = "Passed"; Color = "Green"}, "`r`n")
@@ -28,5 +31,5 @@ function Start-TaskVerification {
         }
     }})
 
-    return (Start-TaskList $Tasks -Colors @{Alias = "Cyan"}).Action
+    return (Start-TaskList $Tasks -Colors @{Alias = "Cyan"} -SubtaskLevel ($SubtaskLevel + 1)).Action
 }

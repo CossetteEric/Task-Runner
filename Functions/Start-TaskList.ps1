@@ -2,7 +2,8 @@ function Start-TaskList {
     Param(
         [hashtable[]]$Tasks,
         [hashtable]$ResultTree = @{},
-        [hashtable]$Colors = @{}
+        [hashtable]$Colors = @{},
+        [int]$SubtaskLevel = 0
     )
 
     if (!$Colors.Alias) {$Colors.Alias = "Green"}
@@ -18,7 +19,7 @@ function Start-TaskList {
         & $BuildAction
         & $BuildVerify
 
-        $Result = Start-Task $_ $ResultTree $Colors
+        $Result = Start-Task $_ $ResultTree $Colors $SubtaskLevel
 
         if ($Result) {
             & $AssignAction $Result.Action

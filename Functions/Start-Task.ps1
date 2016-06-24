@@ -3,14 +3,18 @@ function Start-Task {
         [ValidateScript({Is-Task $_})]
         [hashtable]$Task,
         [hashtable]$ResultTree = @{},
-        [hashtable]$Colors = @{}
+        [hashtable]$Colors = @{},
+        [int]$SubtaskLevel = 0
     )
 
     $Path = $Task.Path
     $Alias = if ($Task.Alias) {$Task.Alias} else {$Task.Path}
     $Description = $Task.Description
 
-    $ColoredAlias = @(@{Value = "Task: $Alias"; Color = $Colors.Alias}, "`r`n")
+    $TaskLevelName = "sub" * $SubtaskLevel + "task"
+    $TaskLevelName = $TaskLevelName[0].ToString().ToUpper() + $TaskLevelName.SubString(1)
+
+    $ColoredAlias = @(@{Value = "$TaskLevelName`: $Alias"; Color = $Colors.Alias}, "`r`n")
 
     $Message = @($ColoredAlias)
     if ($Description) {$Message += @($Description, "`r`n")}
@@ -49,7 +53,7 @@ function Start-Task {
 
     $VerifyResult =
     if ($Verify) {
-        Start-TaskVerification $Verify $ResultTree $ActionResult
+        Start-TaskVerification $Verify $ResultTree $ActionResult $Task.Arguments $SubtaskLevel
     } else {
         @{}
     }
