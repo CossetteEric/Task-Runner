@@ -27,5 +27,8 @@ InModuleScope Task-Runner {
                 $_.Is.Capitalized | Should Be $true
             } 
         }
+        It "fails on invalid ResultTree param" {
+            {Start-TaskList @(@{Path = "Get.User.name"}) $null} | Should Throw
+        }
     }
 }

@@ -1,6 +1,7 @@
 function Start-TaskList {
     Param(
         [hashtable[]]$Tasks,
+        [ValidateScript({Is-ResultTree $_})]
         [hashtable]$ResultTree = @{},
         [hashtable]$Colors = @{},
         [int]$SubtaskLevel = 0
